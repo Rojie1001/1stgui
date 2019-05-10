@@ -1,14 +1,14 @@
+
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	private Button button;
+	private YourButton yourButton;
 	private TextField txtField;
 
 	public static void main(String[] args) {
@@ -27,12 +27,13 @@ public class Main extends Application {
 		stage.setScene(scene);
 
 		// creating a button
-		button = new Button("My first button in JavaFX");
-		button.setLayoutX(230);
-		button.setLayoutY(10);
+		yourButton = new YourButton();
+		yourButton.setText("Teu botão");
+		yourButton.setLayoutX(230);
+		yourButton.setLayoutY(10);
 
 		// adding the button to the pane
-		pane.getChildren().add(button);
+		pane.getChildren().add(yourButton);
 
 		// creating a TextField
 		txtField = new TextField();
@@ -46,19 +47,22 @@ public class Main extends Application {
 		pane.getChildren().add(txtField);
 
 		// setting the button behavior
-		button.setOnAction(new EventHandler<ActionEvent>() {
+		yourButton.setOnMouseClicked(buttonEvent);
 
-			public void handle(ActionEvent event) {
-				updateButtonText();
-			}
-
-		});
+		// setting the txtField behavior using lambda expression
+		txtField.setOnMouseClicked(event -> updateButtonText());
 
 		// showing the created UI
 		stage.show();
 	}
 
+	EventHandler<MouseEvent> buttonEvent = new EventHandler<MouseEvent>() {
+		public void handle(MouseEvent event) {
+			updateButtonText();
+		}
+	};
+
 	private void updateButtonText() {
-		this.button.setText(this.txtField.getText());
+		this.yourButton.setText(this.txtField.getText());
 	}
 }

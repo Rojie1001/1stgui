@@ -13,8 +13,8 @@
 			<artifactId>javafx-controls</artifactId>
 			<version>13-ea+7</version>
 		</dependency>
-
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
