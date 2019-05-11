@@ -5,4 +5,9 @@ public class YourButton extends Button {
 		super();
 		this.setText("Teu botão");
 	}
+	
+	@Override
+	public String toString(){
+		return this.getText();
+	}
 }
