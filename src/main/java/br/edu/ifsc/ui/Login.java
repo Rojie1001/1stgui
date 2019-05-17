@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro8.JMetro;
 
@@ -48,7 +47,8 @@ public class Login extends Application {
 		btnLogin = new Button(Strings.btnLogin);
 		btnLogin.setLayoutX(167);
 		btnLogin.setLayoutY(30);
-		btnLogin.setOnMouseClicked(e -> login()); // setting the button behavior using a lambda expression
+		btnLogin.setOnMouseClicked(e -> login(stage, (int) rating.getRating())); // setting the button behavior using a
+																					// lambda expression
 
 		// creating the rating component, a controlsfx library control
 		rating = new Rating();
@@ -76,15 +76,29 @@ public class Login extends Application {
 		stage.show();
 	}
 
-	private void login() {
+	private void login(Stage stage, int password) {
 
 		if (txtUsername.getText().isEmpty()) {
-			lblLogin.setTextFill(Color.web("#f44242"));
+			try {
+				new Error(Strings.loginError).start(new Stage());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+
+		if (password != 3) {
+			try {
+				new Error(Strings.passwordError).start(new Stage());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return;
 		}
 
 		try {
 			new Main(txtUsername.getText()).start(new Stage());
+			stage.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
