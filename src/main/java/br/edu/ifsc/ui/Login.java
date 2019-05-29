@@ -1,11 +1,8 @@
 package br.edu.ifsc.ui;
 
-import org.controlsfx.control.Rating;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -13,9 +10,8 @@ import jfxtras.styles.jmetro8.JMetro;
 
 public class Login extends Application {
 	private Button btnLogin;
-	private TextField txtUsername;
-	private Rating rating;
-	private Label lblLogin;
+	private TextField txtUser;
+	private TextField txtPass;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -26,46 +22,41 @@ public class Login extends Application {
 
 		// creating the classes hierarchy (pane -> scene -> stage)
 		AnchorPane pane = new AnchorPane();
-		pane.setPrefSize(280, 120);
+		pane.setPrefSize(170, 130);
 		Scene scene = new Scene(pane);
 		stage.setScene(scene);
 
-		// creating the label component
-		lblLogin = new Label(Strings.lblLogin);
-		lblLogin.setLayoutX(10);
-		lblLogin.setLayoutY(10);
-
 		// creating the username textfield
-		txtUsername = new TextField();
-		txtUsername.setLayoutX(10);
-		txtUsername.setLayoutY(31);
-		txtUsername.setMaxWidth(150);
-		txtUsername.setMinWidth(150);
-		txtUsername.setPrefWidth(150);
+		txtUser = new TextField();
+		txtUser.setLayoutX(10);
+		txtUser.setLayoutY(10);
+		txtUser.setMaxWidth(150);
+		txtUser.setMinWidth(150);
+		txtUser.setPrefWidth(150);
+
+		// creating the password textfield
+		txtPass = new TextField();
+		txtPass.setLayoutX(10);
+		txtPass.setLayoutY(50);
+		txtPass.setMaxWidth(150);
+		txtPass.setMinWidth(150);
+		txtPass.setPrefWidth(150);
 
 		// creating the login button
 		btnLogin = new Button(Strings.btnLogin);
-		btnLogin.setLayoutX(167);
-		btnLogin.setLayoutY(30);
-		btnLogin.setOnMouseClicked(e -> login(stage, (int) rating.getRating())); // setting the button behavior using a
-																					// lambda expression
-
-		// creating the rating component, a controlsfx library control
-		rating = new Rating();
-		rating.setUpdateOnHover(true);
-		rating.setLayoutX(10);
-		rating.setLayoutY(70);
-		rating.setPrefWidth(10);
-		rating.setRating(0);
-		rating.setMax(7);
-
+		btnLogin.setLayoutX(10);
+		btnLogin.setLayoutY(90);
+		btnLogin.setMaxWidth(150);
+		btnLogin.setMinWidth(150);
+		btnLogin.setPrefWidth(150);
+		btnLogin.setOnMouseClicked(e -> login(stage, txtPass.getText())); // setting the button behavior using a
+															// lambda expression
 		// adding all created components to the pane
-		pane.getChildren().add(lblLogin);
 		pane.getChildren().add(btnLogin);
-		pane.getChildren().add(txtUsername);
-		pane.getChildren().add(rating);
+		pane.getChildren().add(txtUser);
+		pane.getChildren().add(txtPass);
 
-		// applying the LIGHT style from the JMetro library to the pane
+		// applying the LIGHT style from the JMetro library
 		new JMetro(JMetro.Style.LIGHT).applyTheme(pane);
 
 		// setting some stage (window) properties
@@ -76,28 +67,9 @@ public class Login extends Application {
 		stage.show();
 	}
 
-	private void login(Stage stage, int password) {
-
-		if (txtUsername.getText().isEmpty()) {
-			try {
-				new Error(Strings.loginError).start(new Stage());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return;
-		}
-
-		if (password != 3) {
-			try {
-				new Error(Strings.passwordError).start(new Stage());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return;
-		}
-
+	private void login(Stage stage, String password) {
 		try {
-			new Main(txtUsername.getText()).start(new Stage());
+			new Main(txtUser.getText()).start(new Stage());
 			stage.close();
 		} catch (Exception e) {
 			e.printStackTrace();
