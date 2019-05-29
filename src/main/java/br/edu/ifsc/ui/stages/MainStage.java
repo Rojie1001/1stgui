@@ -10,6 +10,7 @@ import jfxtras.styles.jmetro8.JMetro;
 public class MainStage {
 
 	public MainStage(Stage stage, String username) {
+		
 		// creating the classes hierarchy (pane -> scene -> stage)
 		AnchorPane pane = new AnchorPane();
 		pane.setPrefSize(640, 480);

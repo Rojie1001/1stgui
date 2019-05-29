@@ -1,7 +1,11 @@
 package br.edu.ifsc.ui.stages;
 
+import br.edu.ifsc.ui.entities.User;
+import br.edu.ifsc.ui.util.DB;
 import br.edu.ifsc.ui.util.Strings;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -49,10 +53,7 @@ public class LoginStage {
 		btnLogin.setPrefWidth(150);
 
 		// setting the login button behavior using a lambda expression
-		btnLogin.setOnMouseClicked(e -> {
-			login(txtPass.getText());
-			stage.close();
-		});
+		btnLogin.setOnMouseClicked(e -> login(txtUser.getText(), txtPass.getText(), stage));
 
 		// adding all created components to the pane
 		pane.getChildren().add(btnLogin);
@@ -70,7 +71,27 @@ public class LoginStage {
 		stage.show();
 	}
 
-	private void login(String password) {
-		new MainStage(new Stage(), txtUser.getText());
+	private void login(String username, String pass, Stage stage) {
+
+		User user = DB.users.getUser(username);
+		
+		if (user == null) {
+			showLoginError();
+			return;
+		}
+		
+		if(!user.getPass().equals(pass)) {
+			showLoginError();
+			return;
+		}
+		
+		new MainStage(stage, txtUser.getText());
+	}
+
+	private void showLoginError() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(Strings.loginError);
+		alert.setHeaderText(Strings.loginError);
+		alert.showAndWait();
 	}
 }
