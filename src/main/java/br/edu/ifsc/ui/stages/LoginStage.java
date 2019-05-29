@@ -1,6 +1,6 @@
-package br.edu.ifsc.ui;
+package br.edu.ifsc.ui.stages;
 
-import javafx.application.Application;
+import br.edu.ifsc.ui.util.Strings;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -9,17 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro8.JMetro;
 
-public class Login extends Application {
+public class LoginStage {
 	private Button btnLogin;
 	private TextField txtUser;
 	private PasswordField txtPass;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage stage) throws Exception {
+	public LoginStage(Stage stage) throws Exception {
 
 		// creating the classes hierarchy (pane -> scene -> stage)
 		AnchorPane pane = new AnchorPane();
@@ -54,7 +49,10 @@ public class Login extends Application {
 		btnLogin.setPrefWidth(150);
 
 		// setting the login button behavior using a lambda expression
-		btnLogin.setOnMouseClicked(e -> login(stage, txtPass.getText()));
+		btnLogin.setOnMouseClicked(e -> {
+			login(txtPass.getText());
+			stage.close();
+		});
 
 		// adding all created components to the pane
 		pane.getChildren().add(btnLogin);
@@ -72,10 +70,9 @@ public class Login extends Application {
 		stage.show();
 	}
 
-	private void login(Stage stage, String password) {
+	private void login(String password) {
 		try {
-			new Main(txtUser.getText()).start(new Stage());
-			stage.close();
+			new MainStage(new Stage(), txtUser.getText());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

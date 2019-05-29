@@ -1,4 +1,4 @@
-package br.edu.ifsc.ui;
+package br.edu.ifsc.ui.util;
 
 public class Strings {
 	
