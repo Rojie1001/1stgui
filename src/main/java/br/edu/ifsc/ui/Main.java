@@ -11,10 +11,6 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		try {
-			new LoginStage(primaryStage);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		new LoginStage(primaryStage);
 	}
 }

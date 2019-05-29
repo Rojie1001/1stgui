@@ -71,10 +71,6 @@ public class LoginStage {
 	}
 
 	private void login(String password) {
-		try {
-			new MainStage(new Stage(), txtUser.getText());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		new MainStage(new Stage(), txtUser.getText());
 	}
 }
