@@ -3,6 +3,7 @@ package br.edu.ifsc.ui;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -11,7 +12,7 @@ import jfxtras.styles.jmetro8.JMetro;
 public class Login extends Application {
 	private Button btnLogin;
 	private TextField txtUser;
-	private TextField txtPass;
+	private PasswordField txtPass;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -33,14 +34,16 @@ public class Login extends Application {
 		txtUser.setMaxWidth(150);
 		txtUser.setMinWidth(150);
 		txtUser.setPrefWidth(150);
+		txtUser.setPromptText(Strings.username);
 
 		// creating the password textfield
-		txtPass = new TextField();
+		txtPass = new PasswordField();
 		txtPass.setLayoutX(10);
 		txtPass.setLayoutY(50);
 		txtPass.setMaxWidth(150);
 		txtPass.setMinWidth(150);
 		txtPass.setPrefWidth(150);
+		txtPass.setPromptText(Strings.password);
 
 		// creating the login button
 		btnLogin = new Button(Strings.btnLogin);
@@ -49,8 +52,10 @@ public class Login extends Application {
 		btnLogin.setMaxWidth(150);
 		btnLogin.setMinWidth(150);
 		btnLogin.setPrefWidth(150);
-		btnLogin.setOnMouseClicked(e -> login(stage, txtPass.getText())); // setting the button behavior using a
-															// lambda expression
+
+		// setting the login button behavior using a lambda expression
+		btnLogin.setOnMouseClicked(e -> login(stage, txtPass.getText()));
+
 		// adding all created components to the pane
 		pane.getChildren().add(btnLogin);
 		pane.getChildren().add(txtUser);
