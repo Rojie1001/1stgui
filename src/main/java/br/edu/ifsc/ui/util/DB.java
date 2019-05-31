@@ -1,8 +1,8 @@
 package br.edu.ifsc.ui.util;
 
 import br.edu.ifsc.ui.db.GetUserInterface;
-import br.edu.ifsc.ui.db.GetUserXML;
+import br.edu.ifsc.ui.db.GetUserJSON;
 
 public class DB {
-	public static final GetUserInterface users = new GetUserXML();
+	public static GetUserInterface users = new GetUserJSON();
 }

@@ -1,5 +1,7 @@
 package br.edu.ifsc.ui.stages;
 
+import br.edu.ifsc.ui.db.GetUserJSON;
+import br.edu.ifsc.ui.db.GetUserXML;
 import br.edu.ifsc.ui.entities.User;
 import br.edu.ifsc.ui.util.DB;
 import br.edu.ifsc.ui.util.Strings;
@@ -7,11 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import jfxtras.styles.jmetro8.JMetro;
 
 public class LoginStage {
 	private Button btnLogin;
@@ -22,7 +24,7 @@ public class LoginStage {
 
 		// creating the classes hierarchy (pane -> scene -> stage)
 		AnchorPane pane = new AnchorPane();
-		pane.setPrefSize(170, 130);
+		pane.setPrefSize(170, 190);
 		Scene scene = new Scene(pane);
 		stage.setScene(scene);
 
@@ -51,6 +53,14 @@ public class LoginStage {
 		btnLogin.setMaxWidth(150);
 		btnLogin.setMinWidth(150);
 		btnLogin.setPrefWidth(150);
+		
+		ComboBox<String> dbSource = new ComboBox<String>();
+		dbSource.getItems().add("JSON");
+		dbSource.getItems().add("XML");
+		dbSource.getSelectionModel().select(0);
+		dbSource.setLayoutX(10);
+		dbSource.setLayoutY(150);
+		dbSource.setOnAction(e -> changeDB(dbSource.getSelectionModel().getSelectedItem()));
 
 		// setting the login button behavior using a lambda expression
 		btnLogin.setOnMouseClicked(e -> login(txtUser.getText(), txtPass.getText(), stage));
@@ -59,9 +69,7 @@ public class LoginStage {
 		pane.getChildren().add(btnLogin);
 		pane.getChildren().add(txtUser);
 		pane.getChildren().add(txtPass);
-
-		// applying the LIGHT style from the JMetro library
-		new JMetro(JMetro.Style.LIGHT).applyTheme(pane);
+		pane.getChildren().add(dbSource);
 
 		// setting some stage (window) properties
 		stage.setTitle(Strings.appTitle);
@@ -69,6 +77,13 @@ public class LoginStage {
 
 		// showing the created UI
 		stage.show();
+	}
+
+	private void changeDB(String selectedItem) {
+		if(selectedItem.equals("JSON"))
+			DB.users = new GetUserJSON();
+		else if(selectedItem.equals("XML"))
+			DB.users = new GetUserXML();
 	}
 
 	private void login(String username, String pass, Stage stage) {
