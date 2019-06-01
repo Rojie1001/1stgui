@@ -53,7 +53,7 @@ public class LoginStage {
 		btnLogin.setMaxWidth(150);
 		btnLogin.setMinWidth(150);
 		btnLogin.setPrefWidth(150);
-		
+
 		ComboBox<String> dbSource = new ComboBox<String>();
 		dbSource.getItems().add("JSON");
 		dbSource.getItems().add("XML");
@@ -80,26 +80,39 @@ public class LoginStage {
 	}
 
 	private void changeDB(String selectedItem) {
-		if(selectedItem.equals("JSON"))
+		if (selectedItem.equals("JSON"))
 			DB.users = new GetUserJSON();
-		else if(selectedItem.equals("XML"))
+		else if (selectedItem.equals("XML"))
 			DB.users = new GetUserXML();
+	}
+
+	private void changeDB() {
+		if (DB.users instanceof GetUserJSON)
+			DB.users = new GetUserXML();
+		else if (DB.users instanceof GetUserXML)
+			DB.users = new GetUserJSON();
 	}
 
 	private void login(String username, String pass, Stage stage) {
 
+		try {
+			withCurrentDB(username, pass, stage);
+		} catch (NullPointerException exception) {
+			changeDB();
+			try {
+				withCurrentDB(username, pass, stage);
+			} catch (NullPointerException newException) {
+				showLoginError();
+			}
+		}
+	}
+
+	private void withCurrentDB(String username, String pass, Stage stage) {
 		User user = DB.users.getUser(username);
-		
-		if (user == null) {
+		if (!user.getPass().equals(pass)) {
 			showLoginError();
 			return;
 		}
-		
-		if(!user.getPass().equals(pass)) {
-			showLoginError();
-			return;
-		}
-		
 		new MainStage(stage, txtUser.getText());
 	}
 
