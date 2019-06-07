@@ -3,6 +3,8 @@ package br.edu.ifsc.ui.stages;
 import br.edu.ifsc.ui.db.GetUserJSON;
 import br.edu.ifsc.ui.db.GetUserXML;
 import br.edu.ifsc.ui.entities.User;
+import br.edu.ifsc.ui.exceptions.DBException;
+import br.edu.ifsc.ui.exceptions.LoginException;
 import br.edu.ifsc.ui.util.DB;
 import br.edu.ifsc.ui.util.Strings;
 import javafx.scene.Scene;
@@ -63,7 +65,15 @@ public class LoginStage {
 		dbSource.setOnAction(e -> changeDB(dbSource.getSelectionModel().getSelectedItem()));
 
 		// setting the login button behavior using a lambda expression
-		btnLogin.setOnMouseClicked(e -> login(txtUser.getText(), txtPass.getText(), stage));
+		btnLogin.setOnMouseClicked(e -> {
+			try {
+				login(txtUser.getText(), txtPass.getText(), stage);
+			} catch (LoginException ex) {
+				System.out.println(ex.getMessage());
+			} catch (DBException ex2) {
+
+			}
+		});
 
 		// adding all created components to the pane
 		pane.getChildren().add(btnLogin);
@@ -93,25 +103,29 @@ public class LoginStage {
 			DB.users = new GetUserJSON();
 	}
 
-	private void login(String username, String pass, Stage stage) {
+	private void login(String username, String pass, Stage stage) throws LoginException, DBException {
 
 		try {
 			withCurrentDB(username, pass, stage);
-		} catch (NullPointerException exception) {
+		} catch (DBException exception) {
 			changeDB();
 			try {
 				withCurrentDB(username, pass, stage);
-			} catch (NullPointerException newException) {
-				showLoginError();
+			} catch (DBException newException) {
+				throw new LoginException();
 			}
 		}
 	}
 
-	private void withCurrentDB(String username, String pass, Stage stage) {
+	private void withCurrentDB(String username, String pass, Stage stage) throws DBException {
 		User user = DB.users.getUser(username);
-		if (!user.getPass().equals(pass)) {
-			showLoginError();
-			return;
+		try {
+			if (!user.getPass().equals(pass)) {
+				showLoginError();
+				return;
+			}
+		} catch (NullPointerException ex) {
+			throw new DBException();
 		}
 		new MainStage(stage, txtUser.getText());
 	}
