@@ -3,11 +3,13 @@ package br.edu.ifsc.ui.entities;
 public class User {
 	private String name;
 	private String pass;
+	private boolean isAdmin;
 
 	public User(String name, String pass) {
 		super();
 		this.name = name;
 		this.pass = pass;
+		this.isAdmin = false;
 	}
 
 	public String getName() {
@@ -25,4 +27,13 @@ public class User {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 }

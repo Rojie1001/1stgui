@@ -14,4 +14,6 @@ public class Strings {
 	// main stage strings
 	public static final String lblMain = "Olá";
 	public static final String btnOk = "Ok";
+	public static final String name = "Nome";
+	public static final String isAdmin = "Admin";
 }

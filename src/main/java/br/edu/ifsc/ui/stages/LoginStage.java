@@ -127,7 +127,7 @@ public class LoginStage {
 		} catch (NullPointerException ex) {
 			throw new DBException();
 		}
-		new MainStage(stage, txtUser.getText());
+		//new MainStage(stage, txtUser.getText());
 	}
 
 	private void showLoginError() {
