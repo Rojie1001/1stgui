@@ -16,4 +16,8 @@ public class Strings {
 	public static final String btnOk = "Ok";
 	public static final String name = "Nome";
 	public static final String isAdmin = "Admin";
+
+	public static final String addUser = "Novo usuário";
+
+	public static final String btnAdd = "Adicionar";
 }

@@ -1,26 +1,22 @@
 package br.edu.ifsc.ui.stages;
 
-import java.util.List;
-
 import br.edu.ifsc.ui.entities.User;
 import br.edu.ifsc.ui.util.DB;
 import br.edu.ifsc.ui.util.Strings;
-import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro8.JMetro;
 
-public class MainStage extends Application {
+public class MainStage {
 
-	public void inicie(Stage stage, String username) {
+	public MainStage(Stage stage, String username) {
 
 		// creating the classes hierarchy (pane -> scene -> stage)
 		AnchorPane pane = new AnchorPane();
@@ -33,9 +29,15 @@ public class MainStage extends Application {
 		lblMain.setLayoutX(10);
 		lblMain.setLayoutY(10);
 		pane.getChildren().add(lblMain);
+		
+		Button btnAdd = new Button(Strings.addUser);
+		btnAdd.setLayoutX(400);
+		btnAdd.setLayoutY(10);
+		btnAdd.setOnAction(e -> {
+			new AddUserStage(new Stage());
+		});
 
-		// loading users from the current database
-		List<User> users = DB.users.getUsers();
+		pane.getChildren().add(btnAdd);
 
 		// creating the users table
 		TableView<User> usersTable = new TableView<User>();
@@ -47,7 +49,6 @@ public class MainStage extends Application {
 		// creating the users table cols
 		TableColumn<User, String> colName = new TableColumn<>(Strings.name);
 		TableColumn<User, String> colPass = new TableColumn<>(Strings.password);
-		TableColumn<User, Boolean> colAdmin = new TableColumn<>(Strings.isAdmin);
 
 		// configuring the cols
 		colName.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
@@ -57,18 +58,16 @@ public class MainStage extends Application {
 		colPass.setCellValueFactory(new PropertyValueFactory<User, String>("pass"));
 		colPass.setCellFactory(TextFieldTableCell.forTableColumn());
 		colPass.setMinWidth(200);
-
-		colAdmin.setCellValueFactory(new PropertyValueFactory<User, Boolean>("isAdmin"));
-		colAdmin.setCellFactory(CheckBoxTableCell.forTableColumn(colAdmin));
-		colAdmin.setMinWidth(200);
+		colPass.setOnEditCommit(e -> {
+			DB.users.changePass(e.getRowValue().getName(), e.getNewValue());
+		});
 
 		// adding the created cols to the table
 		usersTable.getColumns().add(colName);
 		usersTable.getColumns().add(colPass);
-		usersTable.getColumns().add(colAdmin);
 
 		// adding users data to the table
-		usersTable.setItems(FXCollections.observableArrayList(users));
+		usersTable.setItems(DB.users.getUsers());
 
 		// adding the table to the pane
 		pane.getChildren().add(usersTable);
@@ -83,14 +82,4 @@ public class MainStage extends Application {
 		// showing the created UI
 		stage.show();
 	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		inicie(primaryStage, "meu bem, bom dia.");
-	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
-
 }

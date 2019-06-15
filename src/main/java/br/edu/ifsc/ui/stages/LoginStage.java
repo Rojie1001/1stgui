@@ -1,7 +1,7 @@
 package br.edu.ifsc.ui.stages;
 
-import br.edu.ifsc.ui.db.GetUserJSON;
-import br.edu.ifsc.ui.db.GetUserXML;
+import br.edu.ifsc.ui.db.UserJSON;
+import br.edu.ifsc.ui.db.UserXML;
 import br.edu.ifsc.ui.entities.User;
 import br.edu.ifsc.ui.exceptions.DBException;
 import br.edu.ifsc.ui.exceptions.LoginException;
@@ -91,16 +91,16 @@ public class LoginStage {
 
 	private void changeDB(String selectedItem) {
 		if (selectedItem.equals("JSON"))
-			DB.users = new GetUserJSON();
+			DB.users = new UserJSON();
 		else if (selectedItem.equals("XML"))
-			DB.users = new GetUserXML();
+			DB.users = new UserXML();
 	}
 
 	private void changeDB() {
-		if (DB.users instanceof GetUserJSON)
-			DB.users = new GetUserXML();
-		else if (DB.users instanceof GetUserXML)
-			DB.users = new GetUserJSON();
+		if (DB.users instanceof UserJSON)
+			DB.users = new UserXML();
+		else if (DB.users instanceof UserXML)
+			DB.users = new UserJSON();
 	}
 
 	private void login(String username, String pass, Stage stage) throws LoginException, DBException {
@@ -127,7 +127,7 @@ public class LoginStage {
 		} catch (NullPointerException ex) {
 			throw new DBException();
 		}
-		//new MainStage(stage, txtUser.getText());
+		new MainStage(new Stage(), txtUser.getText());
 	}
 
 	private void showLoginError() {
