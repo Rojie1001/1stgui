@@ -6,7 +6,7 @@ import br.edu.ifsc.ui.entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class UserJSON implements UserDBInterface {
+public class AdminUser implements UserDBInterface {
 
 	private static ObservableList<User> users;
 
